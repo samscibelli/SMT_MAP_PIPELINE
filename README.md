@@ -62,10 +62,15 @@ In the terminal type,
 Now, within CLASS, 
 
 >> LAS> file in “filename”	! reads the datafile
->> LAS> dev i w			! opens the graphics window 
+
+>> LAS> dev i w			! opens the graphics window
+
 >> LAS> find				! populates the list with observations
->> LAS> set nomatch			! ignores the offset in position when averaging 
->> LAS> av /r				! averages the list population 
+
+>> LAS> set nomatch			! ignores the offset in position when averaging
+
+>> LAS> av /r				! averages the list population
+
 >> LAS> plot				! plot the spectrum
 
 ***5) Baseline the Data***

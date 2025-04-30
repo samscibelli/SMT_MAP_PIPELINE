@@ -20,7 +20,7 @@ bigbeam.class
 
 1) Logging Into Arizona Computer: 
 
->> ssh -Y obs@smtoast.as.arizona.edu	(pw: 10MAstronomyFactory)
+>> ssh -Y obs@smtoast.as.arizona.edu	(enter password)
 
 Next, type in observers initials 
 Now you are in the directory to run the mapping pipeline!

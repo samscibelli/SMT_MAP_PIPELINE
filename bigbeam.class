@@ -1,0 +1,69 @@
+! This macro averages scans in an area around a source,
+! weighted by a Gaussian with the width equal to the sqrt
+! of the difference of the squares
+! of the new width and the original width, both supplied by the user.
+! Used to degrade resolution for comparison to data taken
+! with bigger beams.
+! Assumes you have already found all the scans you wish to average
+! Syntax: @BIGBEAM L0 B0 B BS
+!    where L0  is RA offset about which you want average
+!          B0  is DEC offset about which you want average
+!          B is FWHM of the new beam in units of ARCSEC
+!          BS is FWHM of the old beam in units of ARCSEC
+@p:header
+DEFINE REAL L0 B0 B BS BSQ WE SUM WON FACT RSQ WMIN WMAX
+say "Averages spectra in index, weighted by Gaussian."
+say "Used to compare to data in a big beam."
+say "Warning: all data must have same spectral resolution"
+say "Otherwise, strange things will happen"
+SAY "ENTER RA offset (in units of ARCSEC) L0"
+LET L0 = &1
+SAY "ENTER Dec offset (in units of ARCSEC) B0"
+LET B0 = &2
+SAY "ENTER FWHM of New Beam in units of ARCSEC"
+LET B = &3
+SAY "ENTER FWHM of Old Beam in units of ARCSEC"
+SAY "Must be smaller than new beam"
+LET BS = &4
+if (b.le.Bs) then
+say "You MUST have old beam less than new beam"
+return
+endif
+let b = 0.6006*sqrt(B**2-BS**2)
+! calculates 1/e width (1/2sqrt(ln2)*fwhm) of "diff" beam
+LET BSQ = B*B
+let sum = 0.0
+SET ALIGN V
+SET WEIGHT equal
+SET NOMATCH
+SET ANGLE S
+get first
+let rsq = (off_lambda-L0)**2+(off_beta-B0)**2
+let we = exp(-rsq|bsq)
+let wmin = we
+let wmax = we
+let sum = sum+we
+mult we
+for i 1 to found-1
+	get next
+	let rsq = (off_lambda-L0)**2+(off_beta-B0)**2
+	let we = exp(-rsq|bsq)
+        examine we
+        let wmin = min(wmin,we)
+	let wmax = max(wmax,we)
+	let sum = sum+we
+	mult we
+	accum
+next
+say "Average completed; Sum of Weights is:"
+examine sum
+say "Maximum and Minimum Weights are:"
+examine wmax
+examine wmin
+! The next step is necessitated by a bug 1.0|x = 1.0 4/13/94
+let won = 1.00
+let fact = won|sum
+examine fact
+mult fact
+modify offsets L0 B0
+@P:tailer

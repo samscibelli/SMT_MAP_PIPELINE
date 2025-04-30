@@ -1,0 +1,60 @@
+! This macro searches an area around a source for scans and sum
+! all scans for a identical offsets. You may want to set source
+! and line before executing the marco.
+! Syntax: @SUMALL I1 I2 J1 J2 SPACING FILEOUT
+!    where I1 I2 are RA range in units of SPACING
+!          J1 J2     DEC
+!          SPACING is in units of ARCSEC
+!@p:header
+
+DEFINE CHARACTER FILEIN*40
+
+SAY "ENTER INPUT FILE NAME: "
+LET FILEIN = &1
+FILE IN 'FILEIN'
+FIND
+LIST
+
+DEFINE CHARACTER FILEOUT*40 yon*3
+DEFINE REAL I1 I2 J1 J2 A[2] SPACING
+DEFINE INTEGER II JJ
+SET EXTENSION .SUM
+SAY "ENTER RA offset range (in units of ARCSEC) I1, I2"
+LET I1 = &1
+LET I2 = &2
+SAY "ENTER Dec offset range (in units of ARCSEC) J1, J2"
+LET J1 = &3
+LET J2 = &4
+SAY "ENTER SPACING in units of ARCSEC"
+LET SPACING = &5
+LET II = (I2-I1)|SPACING+1
+LET JJ = (J2-J1)|SPACING+1
+SAY "ENTER output file name (default extension .SUM)"
+LET FILEOUT = &6
+say "Are you writing to a NEW file (NEW/OLD)?"
+LET YON = &7
+if yon.eq."NEW".or.yon.eq."new" then
+  file out 'fileout' MULTIPLE 
+else
+  FILE OUT 'FILEOUT' 
+endif
+SET ALIGN V
+SET WEIGHT S
+SET ANGLE S
+LET A[1] = I1-SPACING
+FOR I 1 TO II
+    LET A[1] = A[1]+SPACING
+    LET A[2] = J1-SPACING
+    FOR J 1 TO JJ 
+        LET A[2] = A[2]+SPACING
+        SET OFF 'A[1]' 'A[2]'
+        FIND /ALL
+        IF FOUND.GT.0 THEN
+            ACCUMULATE !SUM
+            BASE 1
+            WRITE
+        ENDIF
+    NEXT
+NEXT
+SET OFF * *
+!@p:tailer

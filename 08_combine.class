@@ -1,0 +1,44 @@
+!  @P:combine
+!  writes scans in the current index to a designated output file after
+!  adjusting observation #'s to fit
+!  @p:header
+
+DEFINE CHARACTER FILEIN*40  
+
+SAY "ENTER INPUT FILE NAME: "
+LET FILEIN = &1 
+FILE IN 'FILEIN' 
+FIND
+LIST
+
+SIC\DEFINE REAL J
+DEFINE CHARACTER FILEOUT*40 YON*1
+SAY "What file do you want to append to? "
+LET FILEOUT = &2
+FILE OUT 'FILEOUT'
+SAY "Do you want to adjust observation numbers (Y/N)?"
+LET YON = &3
+IF YON.NE."N" THEN
+SAY "New Starting Observation #:"
+SIC\LET J = &4
+ENDIF
+GET FIRST
+FOR I 1 TO found-1
+	IF YON.NE."N" THEN
+	SIC\LET NUMBER = J
+	SIC\LET J = J+1
+	ENDIF
+	WRITE
+	GET N
+NEXT
+IF YON.NE."N" THEN
+SIC\LET NUMBER = J
+ENDIF
+WRITE
+
+SAY "CHECK THE ENDING SCAN NUMBER"
+LET FILE IN = &2
+FILE IN 'FILEOUT'
+FIND
+LIST
+

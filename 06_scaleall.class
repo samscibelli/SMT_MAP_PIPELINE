@@ -1,0 +1,42 @@
+! Scale all the scans in the current list
+! No Smoothing is done 
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!! USER INPUT FILES !!!!!!!!!!!!!!!!!!!!!!!
+
+DEFINE CHARACTER FILEIN*40  FILEOUT*40 YON*3
+
+SAY "ENTER INPUT FILE NAME: "
+LET FILEIN = &1 
+FILE IN 'FILEIN' 
+FIND 
+
+SAY "ENTER OUTPUT FILE NAME (default extension: .SCALE)"
+LET FILEOUT = &2
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+SET EXTENSION .SCALE
+DEFINE real M
+
+SAY "Scale Factor to Muliply the Data = "
+LET M = &3
+
+SAY "Are you writing to a NEW file (NEW/OLD)?"
+LET YON = &4
+IF YON.EQ."NEW".OR.YON.EQ."new" THEN
+	FILE OUT 'FILEOUT' SINGLE
+ELSE
+	FILE OUT 'FILEOUT'
+ENDIF
+
+GET FIRST
+MULTIPLY M
+FOR I 1 TO found-1
+	WRITE
+	GET N
+	MULTIPLY M
+NEXT 
+WRITE
+
+

@@ -1,0 +1,48 @@
+! Baselining all the scans in the current list
+! No Smoothing is done 
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!! USER INPUT FILES !!!!!!!!!!!!!!!!!!!!!!!
+!!!!! USER GIVES NUMBER !!!!!!!!!!!!!!!!!!!!!!
+!!!!! USER GIVES H/V    !!!!!!!!!!!!!!!!!!!!!!
+
+DEFINE CHARACTER FILEIN*40  FILEOUT*40 YON*3
+
+SAY "ENTER INPUT FILE NAME: "
+LET FILEIN = &1 
+FILE IN 'FILEIN' 
+FIND 
+
+SAY "ENTER OUTPUT FILE NAME (default extension: .BASE)"
+LET FILEOUT = &2
+
+!Default window, ADJUST if necessary!
+SET UNIT V
+SET WIN 0 10
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+SET EXTENSION .BASE
+DEFINE INTEGER J
+
+SAY "BASELINE ORDER"
+LET J = &3
+
+SAY "Are you writing to a NEW file (NEW/OLD)?"
+LET YON = &4
+IF YON.EQ."NEW".OR.YON.EQ."new" THEN
+	FILE OUT 'FILEOUT' SINGLE
+ELSE
+	FILE OUT 'FILEOUT'
+ENDIF
+
+GET FIRST
+BASE J
+FOR I 1 TO found-1
+	WRITE
+	GET N
+	BASE J
+NEXT 
+WRITE
+
+

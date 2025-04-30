@@ -1,0 +1,108 @@
+! 
+! This macro makes a new file containing scans which have been
+! averaged by a routine called bigbeam.
+! This will take the input min. and max. ra and dec offsets and
+! step size, as well as the requested beam and current beam.
+! N.B. This will write scans at locations where there are
+! NO data, so user must use common sense.
+! bigbeam averages scans in an area around a source,
+! weighted by a Gaussian with the width equal to the sqrt
+! of the difference of the squares
+! of the new width and the original width, both supplied by the user.
+! Used to degrade resolution for comparison to data taken
+! with bigger beams.
+! Assumes you have already found all the scans you wish to average
+! Syntax: @CONVALL LMIN LMAX BMIN BMAX STEP BB BBS FILEOUT
+!    where LMIN  is min. RA offset, LMAX is max.
+!          BMIN  is min. DEC offset, BMAX is max.
+!          STEP is increment assumed same in ra and dec.
+!          BB is FWHM of the new beam in units of ARCSEC
+!          BBS is FWHM of the old beam in units of ARCSEC
+!          FILEOUT is the name of the file you want to write to
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!! USER INPUT FILES !!!!!!!!!!!!!!!!!!!!!!!
+
+DEFINE CHARACTER FILEIN*40  FILEOUT*40 YON*3
+DEFINE REAL LMAX LMIN BMAX BMIN STEP
+DEFINE INTEGER II JJ
+SET EXTENSION .CONV
+
+say "Creates new scans over map specified by Gaussian averaging data"
+say "At each position, it will use all scans within +/- full beam"
+say "Warning: all data must have same spectral resolution"
+say "Otherwise, strange things will happen"
+say "If first time run in this session, type"
+say "DEFINE REAL LC BC BB BBS /global"
+say "After return, hit C to continue"
+pause
+
+SAY "ENTER INPUT FILE NAME: "
+LET FILEIN = &1 
+FILE IN 'FILEIN' 
+FIND 
+
+SAY "ENTER OUTPUT FILE NAME (default extension: .CONV)"
+LET FILEOUT = &2
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+SAY "ENTER MIN RA offset (in units of ARCSEC) LMIN"
+LET Lmin = &1
+SAY "ENTER MAX RA offset (in units of ARCSEC) LMAX"
+LET Lmax = &2
+SAY "ENTER MIN Dec offset (in units of ARCSEC) BMIN"
+LET BMIN = &3
+SAY "ENTER MAX Dec offset (in units of ARCSEC) BMAX"
+LET BMAX = &4
+SAY "ENTER STEP SIZE (in units of ARCSEC) STEP"
+LET STEP = &5
+SAY "ENTER FWHM of New Beam in units of ARCSEC"
+LET BB = &6
+SAY "ENTER FWHM of Old Beam in units of ARCSEC"
+SAY "Must be smaller than new beam"
+LET BBS = &7
+if (BB.le.BBS) then
+say "You MUST have old beam less than new beam"
+return
+endif
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+SET EXTENSION .CONV
+
+SAY "Are you writing to a NEW file (NEW/OLD)?"
+LET YON = &4
+IF YON.EQ."NEW".OR.YON.EQ."new" THEN
+	FILE OUT 'FILEOUT' SINGLE
+ELSE
+	FILE OUT 'FILEOUT'
+ENDIF
+
+let ii = 1 
+! first do lowest RA column
+let lc = lmin
+examine lc
+for /while lc.le.lmax
+ let bc = bmin
+ examine bc
+ for /while bc.le.bmax
+  set range lc-bb lc+bb bc-bb bc+bb
+  show range
+!  pause
+  find
+  if (found.ne.0) then
+   @bigbeam lc bc bb bbs
+   modify offsets lc bc
+   write ii
+   let ii = ii+1
+  endif
+  let bc = bc+step
+  examine bc
+ next
+ let lc = lc+step
+ examine lc
+next
+set range * * * *
+set match
+set weight time
+

@@ -61,12 +61,12 @@ In the terminal type,
 
 Now, within CLASS, 
 
-LAS> file in “filename”	! reads the datafile
-LAS> dev i w			! opens the graphics window 
-LAS> find				! populates the list with observations
-LAS> set nomatch			! ignores the offset in position when averaging 
-LAS> av /r				! averages the list population 
-LAS> plot				! plot the spectrum
+>> LAS> file in “filename”	! reads the datafile
+>> LAS> dev i w			! opens the graphics window 
+>> LAS> find				! populates the list with observations
+>> LAS> set nomatch			! ignores the offset in position when averaging 
+>> LAS> av /r				! averages the list population 
+>> LAS> plot				! plot the spectrum
 
 ***5) Baseline the Data***
 
@@ -78,7 +78,7 @@ Before you do,
 
 After these initial steps, run the script within CLASS, 
 
-LAS > @05_baseline.class
+>> LAS > @05_baseline.class
 
 The script will ask you: 
 1) What data file you want to baseline (e.g., class.sdd_f1m-hl.ces_012)

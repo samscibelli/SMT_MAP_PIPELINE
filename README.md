@@ -106,7 +106,7 @@ Again, keep track of the files you create!
 
 Run the script within CLASS, 
 
-LAS > @06_scaleall.class
+>> LAS > @06_scaleall.class
 
 The script will ask you: 
 

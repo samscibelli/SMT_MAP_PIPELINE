@@ -99,4 +99,28 @@ Note: the current script doesn’t smooth the data, but it is possible to change
 
 *Run the script for all the files!*
 
+***6) Scale the Data***
+
+Similar to the above flow, next, run the 06_scaleall.class file on the .base files you just created. 
+Again, keep track of the files you create!
+
+Run the script within CLASS, 
+
+LAS > @06_scaleall.class
+
+The script will ask you: 
+
+1) What data file you want to baseline (e.g., class_f1m_hl_ces_012.base)
+
+2) What the name of your output file will be (e.g., class_f1m_hl_ces_012)
+The script will automatically give the extension as ‘.scale
+
+3) What factor to multiply your data - this factor is based on the main beam temperature efficiencies (e.g., if your efficiency is 70% you multiple by 1.43). ARO compiles these efficiencies into spreadsheets, which you can find here(https://aro.as.arizona.edu/?q=beam-efficiencies)
+
+4) Whether you are writing a new file or not 
+
+NOTE: If you are just reducing single-pointing data, you can skip ahead to combining and summing! :) 
+
+
+
 

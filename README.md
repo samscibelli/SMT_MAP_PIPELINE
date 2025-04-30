@@ -121,6 +121,84 @@ The script will automatically give the extension as ‘.scale
 
 NOTE: If you are just reducing single-pointing data, you can skip ahead to combining and summing! :) 
 
+***7) Convolve the Data***
+
+Similar to the above flow, next, run the 07_convolve.class file on the new .scale files you just created. 
+
+Again, keep track of the files you create! 
+
+Before diving in, you’ll need to know in arcseconds the size of the data cube and pixel spacing! See Mangum et al., 2007 "A suitable cell size would be less than or equal to 1/3 of the single-dish-beam-size”
+
+Run the script within CLASS, 
+
+>> LAS > @07_convolve.class
+
+The script will ask you: 
+
+1) What data file you want to baseline (e.g., class_f1m_hl_ces_012.scale)
+
+2) What the name of your output file will be (e.g., class_f1m_hl_ces_012)
+      a) The script will automatically give the extension as ‘.conv
+
+3) Information about the convolving: 
+      a) The minimum RA offset (in units of arcseconds)
+   
+      b) The maximum RA offset (in units of arcseconds)
+   
+      c) The minimum DEC offset (in units of arcseconds)
+   
+      d) The maximum DEC offset (in units of arcseconds)
+   
+          - E.g., if your map is 5x5 arcmin, then from the center your minimum values are -150 arcseconds and maximum values are 150 arcseconds
+      e) Enter the Step Size (in units of arcseconds)
+
+           - 1/3 of the beam size or smaller
+   
+      f) Enter the FWHM of New Beam (in units of arcseconds)
+   
+      g) Enter the FWHM of Old Beam (in units of arcseconds)
+   
+          - Old beam must be smaller!
+
+4) Whether you are writing a new file or not 
+
+*You can also edit the script to hard-wire the convolving information if you have many maps to run through with the same mapping info from point 3) above!
+
+***8) Combine the Data***
+
+To combine the data, you will first need to copy over the first file into a file you would like to combine all the scans into, i.e., 
+
+>> cp class_f1m_hl_ces_012.conv class_f1m_hl_ces.comb
+
+Then, keep track of the amount of observation numbers for each map, as you will need to give the new starting number each time you add a map to this combined file. 
+
+Then, you can run the 08_combine.class file in CLASS: 
+
+<< LAS > @08_combine.class
+
+The script will ask you: 
+
+1) What data file you want to add to the combined file
+
+2) What the name of your output file is that you just created (e.g., class_f1m_hl_ces.comb)
+
+3) What the scan number is to start this new set of map scans 
+
+***9) Sum the Data***
+
+	Typically to save on data space, each position in the map can be ‘summed’ together. Unfortunately it is currently not available. This shouldn’t affect the resulting maps!
+ 
+***10) Fit the Data and Make the Map!***
+
+Run the 10_map_fitting.pro class file in CLASS: 
+
+>> LAS > @10_map_fitting.pro 
+
+The script will ask you: 
+What data file you want to fit 
+What the new names of the files should be 
+
+
 
 
 

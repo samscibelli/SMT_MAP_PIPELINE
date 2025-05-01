@@ -1,6 +1,8 @@
 # SMT Mapping Pipeline
 
-This pipeline uses Python and [CLASS/GILDAS](https://www.iram.fr/IRAMFR/GILDAS/) scripts. It also assumes you have all necessary scripts (also located in this repository) in the directory you are reducing the data in: 
+Here we describe the steps and flow of the 'SMT Mapping Pipeline', complied by myself (Samantha Scibelli). Some of these scripts I created, but many were 'passed down' from CLASS routines already in available on the [Arizona Radio Observatory (ARO)](https://aro.as.arizona.edu) computers. And, while this pipeline has been created specifically for the ARO's SMT 10m radio telescope, it can also work with ARO 12m data or any On-The-Fly (OTF) single-dish mapping data recorded in a similar format. This is a pipeline/workflow that can convert OTF mapping data to a [GILDAS/CLASS](https://www.iram.fr/IRAMFR/GILDAS/) format, inspect the data, baseline the data, scale the data to the correct main beam temperature, convolve the OTF map to regular grid, combine data from multiple maps, and finally fit the data and create the map in both standard .lmv (to open in CLASS/GREG) and .fits file formats.
+
+This pipeline uses some Python, but mostly [GILDAS/CLASS](https://www.iram.fr/IRAMFR/GILDAS/) scripts. It also assumes you have all the necessary scripts (also located in this repository) in the directory you are reducing the data in: 
 
 - 01_script_otf_to_class.py
 
@@ -18,26 +20,34 @@ This pipeline uses Python and [CLASS/GILDAS](https://www.iram.fr/IRAMFR/GILDAS/)
 
 - bigbeam.class
 
-You can follow along with example data, which are also in this repository, starting at step 4). We have 12CO ('hu', horizontal polarization in upper side band) and 13CO ('hl', horizontal polarization in lower side band) data of the B68 dark cloud. When you unzip 'class.sdd_FILES.zip' you should find the following files: 
+You can follow along with example data, which are also in this repository, starting from step 4) below. We have 12CO (in 'hu', horizontal polarization in upper side band) and 13CO (in 'hl', horizontal polarization in lower side band) data of the B68 dark cloud. When you unzip 'class.sdd_FILES.zip' you should find the following files: 
 
 - class.sdd_fqm-hu.atc_007
 - class.sdd_fqm-hl.atc_007
 
+Here, we following along with the 12CO ('hu') data file. Note that typically you will have both polarizations (i.e., 'hu' and 'vu') that will need to be scaled seperately and combined later. For the purposes of this example, we just work with the horizontal polarization.
+
 ## 1) Logging Into Arizona Computer:
+
+Typically, you will want to perform this reduction on the Arizona computer that has your 'raw' data file (with extension .smt or .12m) where you collected your observations, and that already has GILDAS/CLASS installed. If you already have a CLASS formatted data file (i.e., our example file class.sdd_fqm-hu.atc_007) and the proper software installed on your own computer, you can skip ahead to step 4). 
+
+First, log into the Arizona machines, e.g., 
 
           ssh -Y obs@smtoast.as.arizona.edu	
 
-Next, enter password and type in observers initials
+Next, enter password (given to you by Arizona staff) and type in observer initials (i.e., directory where observations are located). 
   
 Now you are in the directory to run the mapping pipeline!
 
-*NOTE: you need to make sure your computer's IP address can log into this arizona computer!*
+*NOTE: you need to make sure your computer's IP address can log into the arizona computer!*
 
 ## 2) Collect Map Scan Numbers:
 
-Either while observing or after observing, make sure to record the beginning and ending scan numbers for each map in the raw data files (.smt files). 
+Either while observing or after observing, make sure to record the beginning and ending scan numbers for each map in the raw data files (e.g., the .smt files). 
 
-Each map should have the same number of scans (a 5’x5’ map has 45 scan)
+Each map should have the same number of scans (a 5’x5’ map has 45 scan). 
+
+*NOTE: typically while observing I suggest making a new data for each map in order to avoid confusion and potentially over-writing data.*
 
 ## 3) Run Python Script to convert OTF to CLASS
 
@@ -45,18 +55,16 @@ Run in the terminal python script provided,
 
           python 01_script_otf_to_class.py 
 
-The script has hard-wired the observer initials, so change if needed. 
-
 The script will ask you the following, 
 
 1) What the observer initials are (this can instead be hard-wired for ease)
-2) Data file the mapping data comes from
+2) Data file the mapping data comes from (e.g., if data file is class_001.smt then '1' is your data file number)
 3) Beginning scan number
 4) End scan number
 5) The backend name (e.g., in the example we use 'fqm' for the 250kHz backend)
-6) Telescope sideband (upper or lower)
+6) Telescope sideband (upper 'u' or lower 'l')
 
-The script will then produce the CLASS map files that start with ‘class.sdd’ in the name for both vertical and horizontal polarizations. 
+The script will then produce the CLASS map files that start with ‘class.sdd’ in the name for both vertical and horizontal polarizations.
 
 *NOTE: If you have individual maps in the same data file you can either ‘append’ to the same ‘class.sdd’ file or re-name files to indicate a new map has been produced by the same data file (I recommend the latter).*
 

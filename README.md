@@ -74,6 +74,8 @@ Now, within CLASS,
 
 >> LAS> dev i w			                ! opens the graphics window
 
+>> LAS> set unit v		       ! plot on velocity scale
+
 >> LAS> find			     ! populates the list with observations
 
 >> LAS> set nomatch		! ignores the offset in position when averaging
@@ -82,7 +84,7 @@ Now, within CLASS,
 
 >> LAS> plot				! plot the spectrum
 
->> LAS> set unit v		       ! plot on velocity scale
+![CO average!](class_window_test.jpeg "CO spectrum averaged")
 
 This can help tell you if you have any bad maps/scans and also help you set your window around the spectral line of interest for the baselining (see next step). 
 

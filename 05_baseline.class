@@ -18,7 +18,7 @@ LET FILEOUT = &2
 
 !Default window, ADJUST if necessary!
 SET UNIT V
-SET WIN 0 10
+SET WIN 0 10  !the velocity range around the line of interest
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 

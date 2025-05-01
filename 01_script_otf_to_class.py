@@ -1,9 +1,12 @@
 ### Author:  Samantha Scibelli
 ### Date:    April 18th, 2025
-### Updated: April 29th, 2025
+### Updated: April 30th, 2025
 ### Purpose: Automate process of taking raw otf maps from .smt files to CLASS files
 
 import os 
+
+#Initial inputs:
+init = input("User initials")
 
 #User inputs file number
 n = input("File Number: ")

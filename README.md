@@ -2,7 +2,7 @@
 
 Here we describe the steps and flow of the 'SMT Mapping Pipeline', complied by myself (Samantha Scibelli). Some of these scripts I created, but many were 'passed down' from CLASS routines already in available on the [Arizona Radio Observatory (ARO)](https://aro.as.arizona.edu) computers. And, while this pipeline has been created specifically for the ARO's SMT 10m radio telescope, it can also work with ARO 12m data or any On-The-Fly (OTF) single-dish mapping data recorded in a similar format. This is a pipeline/workflow that can convert OTF mapping data to a [GILDAS/CLASS](https://www.iram.fr/IRAMFR/GILDAS/) format, inspect the data, baseline the data, scale the data to the correct main beam temperature, convolve the OTF map to regular grid, combine data from multiple maps, and finally fit the data and create the map in both standard .lmv (to open in CLASS/GREG) and .fits file formats.
 
-This pipeline uses some Python, but mostly [GILDAS/CLASS](https://www.iram.fr/IRAMFR/GILDAS/) scripts. It also assumes you have all the necessary scripts (also located in this repository) in the directory you are reducing the data in: 
+This pipeline uses some Python, but mostly [GILDAS/CLASS](https://www.iram.fr/IRAMFR/GILDAS/) scripts. It also assumes you have all the necessary scripts in the directory you are reducing the data in (also located in this repository): 
 
 - 01_script_otf_to_class.py
 
@@ -20,16 +20,16 @@ This pipeline uses some Python, but mostly [GILDAS/CLASS](https://www.iram.fr/IR
 
 - bigbeam.class
 
-You can follow along with example data, which are also in this repository, starting from step 4) below. We have 12CO (in 'hu', horizontal polarization in upper side band) and 13CO (in 'hl', horizontal polarization in lower side band) data of the B68 dark cloud. When you unzip 'class.sdd_FILES.zip' you should find the following files: 
+You can follow along with example data, are also in this repository, starting from step 4) below. We have 12CO (in 'hu', horizontal polarization in upper side band) and 13CO (in 'hl', horizontal polarization in lower side band) data of the B68 dark cloud. When you unzip the 'class.sdd_FILES.zip' file, you should find the following data files: 
 
 - class.sdd_fqm-hu.atc_007
 - class.sdd_fqm-hl.atc_007
 
-Here, we following along with the 12CO ('hu') data file. Note that typically you will have both polarizations (i.e., 'hu' and 'vu') that will need to be scaled seperately and combined later. For the purposes of this example, we just work with the horizontal polarization.
+In this tutorial we will be following along with the 12CO ('hu') data file. Note that typically you will have both polarizations (i.e., 'hu' and 'vu') that will need to be scaled seperately and combined later. For the purposes of this example, we just work with the horizontal polarization.
 
 ## 1) Logging Into Arizona Computer:
 
-Typically, you will want to perform this reduction on the Arizona computer that has your 'raw' data file (with extension .smt or .12m) where you collected your observations, and that already has GILDAS/CLASS installed. If you already have a CLASS formatted data file (i.e., our example file class.sdd_fqm-hu.atc_007) and the proper software installed on your own computer, you can skip ahead to step 4). 
+Typically, you will want to perform this reduction on the Arizona computer that has your 'raw' data file (with extension .smt or .12m) where you collected your observations, and that already has GILDAS/CLASS installed. If you already have a CLASS formatted data file (i.e., our example file 'class.sdd_fqm-hu.atc_007') and the proper software installed on your own computer, you can skip ahead to step 4) below. 
 
 First, log into the Arizona machines, e.g., 
 
@@ -37,15 +37,15 @@ First, log into the Arizona machines, e.g.,
 
 Next, enter password (given to you by Arizona staff) and type in observer initials (i.e., directory where observations are located). 
   
-Now you are in the directory to run the mapping pipeline!
+Now you are in the directory to run the mapping pipeline! Make sure all the reduction scripts are in this directory. 
 
-*NOTE: you need to make sure your computer's IP address can log into the arizona computer!*
+*NOTE: you also need to make sure your computer's IP address can log into the arizona computer!*
 
 ## 2) Collect Map Scan Numbers:
 
 Either while observing or after observing, make sure to record the beginning and ending scan numbers for each map in the raw data files (e.g., the .smt files). 
 
-Each map should have the same number of scans (a 5’x5’ map has 45 scan). 
+Each map should have the same number of scans (a 5 arcminute x 5 arcminute map has 45 scans). 
 
 *NOTE: typically while observing I suggest making a new data for each map in order to avoid confusion and potentially over-writing data.*
 
@@ -53,12 +53,12 @@ Each map should have the same number of scans (a 5’x5’ map has 45 scan).
 
 Run in the terminal python script provided, 
 
-          python 01_script_otf_to_class.py 
+        python 01_script_otf_to_class.py 
 
 The script will ask you the following, 
 
 1) What the observer initials are (this can instead be hard-wired for ease)
-2) Data file the mapping data comes from (e.g., if data file is class_001.smt then '1' is your data file number)
+2) Data file number the mapping data comes from (e.g., if data file is 'class_001.smt' then '1' is your data file number)
 3) Beginning scan number
 4) End scan number
 5) The backend name (e.g., in the example we use 'fqm' for the 250kHz backend)
@@ -94,12 +94,11 @@ Now, within CLASS,
 
 ![CO average!](class_window_test.jpeg "CO spectrum averaged")
 
-This can help tell you if you have any bad maps/scans and also help you set your window around the spectral line of interest for the baselining (see next step). 
+This inspection will let you know if you have any bad maps/scans and also help you set your window around the spectral line of interest for the baselining (see next step). 
 
 ## 5) Baseline the Data
 
-First, run the 05_baseline.class file on all of the data files you created. 
-Before you do,
+Before you run the 05_baseline.class script,
 
 1) You will need to keep track of the input and output file names either in a spreadsheet or text file!
 2) In the script, a window around the line of interest is hard-wired. Adjust this as needed. E.g., in the example script
@@ -139,24 +138,24 @@ Run the script within CLASS,
 The script will ask you: 
 
 1) What data file you want to baseline, e.g.,
+
+              class_fqm_hu_atc_007.base
    
-           class_fqm_hu_atc_007.base
-   
-2) What you want the name of your output file to be, e.g.,
+3) What you want the name of your output file to be, e.g.,
    
 	   class_fqm_hu_atc_007
    
 	The script will automatically give the extension as ‘.scale
 
-3) What factor to multiply your data (e.g., use '1' in this example). This factor is based on the main beam temperature efficiencies (e.g., if your efficiency is 70% you multiple by 1.43). ARO compiles these efficiencies into spreadsheets, which you can find here: https://aro.as.arizona.edu/?q=beam-efficiencies
+4) What factor to multiply your data (e.g., use '1' in this example). This factor is based on the main beam temperature efficiencies (e.g., if your efficiency is 70% you multiple by 1.43). ARO compiles these efficiencies into spreadsheets, which you can find here: https://aro.as.arizona.edu/?q=beam-efficiencies
 
-4) Whether you are writing a new file or not (yes)
+5) Whether you are writing a new file or not (yes)
 
 ## 7) Convolve the Data 
 
-Similar to the above flow, next, run the 07_convolve.class file on the new .scale files you just created. Again, keep track of the files you create! 
+Before diving in to the convolving, you’ll need to know in arcseconds the size of the data cube, the current beam size, the new beam size, and pixel spacing! See [Mangum et al., 2007](https://ui.adsabs.harvard.edu/abs/2007A%26A...474..679M/abstract) for more on best practices for OTF mapping and convolution. 
 
-Before diving in, you’ll need to know in arcseconds the size of the data cube and pixel spacing! See Mangum et al., 2007 for more on OTF mapping. 
+Then, similar to the above flow, run the 07_convolve.class file on the new .scale files you just created. Again, keep track of the files you create! 
 
 Run the script within CLASS, 
 
@@ -218,7 +217,7 @@ This script should take the longest to run (several minutes depending on the ste
 
 ## 8) Combine the Data
 
-If you have multiple maps you will need to combine the data. To do this, you will first need to copy over the first file into a file you would like to combine all the scans into, e.g., 
+If you have multiple maps, which is usually the case, you will need to combine the data. To do this, you will first need to copy over the first file into a file you would like to combine all the scans into, e.g., 
 
             cp class_fqm_hu_atc_007.conv class_fqm_atc_007.comb
 
@@ -230,11 +229,11 @@ To combine, run the 08_combine.class file in CLASS:
 
 The script will ask you: 
 
-1) What data file you want to add to the combined file
+1) What the name is of data file you want to add to the combined file
 
-2) What the name of your output file is that you just created 
+2) What the name is of your output combined file is that you just created (e.g., class_fqm_atc_007.comb)
 
-3) What the scan number is to start this new set of map scans 
+3) What new scan number starts this new set of map scans 
 
 ## 9) Sum the Data
 
@@ -242,7 +241,7 @@ Typically to save on data space, each position in the map can be ‘summed’ to
  
 ## 10) Fit the Data and Make the Map! 
 
-Before you Run the fitting script, you need to change the script to include fitting parameters for the line of interest. Adjust this as needed. E.g., in the example script
+Before you run the 10_map_fitting.pro script, you need to manually edit the script to include fitting parameters for the line of interest. Adjust this as needed. E.g., in the example script
    
           SET WIN 0 10 !the velocity range around the line of interest
 
@@ -269,7 +268,7 @@ The script will ask you:
    
 	   class_fqm_hu_atc_007
    
-The script will create the follwing map file that can be read by class, 
+The script will create the following map file that can be read by class, 
 - class_fqm_hu_atc_007.lmv
 
 To inspect this map you can do the following in CLASS/GREG: 
@@ -278,9 +277,9 @@ To inspect this map you can do the following in CLASS/GREG:
 
 >> LAS > let type lmv
 
->> LAS > go view    ! interactive map
-
 >> LAS > go bit     ! channel maps
+
+>> LAS > go view    ! interactive map
 
 >> LAS > hard  class_fqm_hu_atc_007.eps   ! save image
 

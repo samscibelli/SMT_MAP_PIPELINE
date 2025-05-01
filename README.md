@@ -1,6 +1,6 @@
 # SMT Mapping Pipeline
 
-This pipeline assumes you have all necessary scripts in your directory: 
+This pipeline uses Python and [CLASS/GILDAS scripts](https://www.iram.fr/IRAMFR/GILDAS/) scripts. It also assumes you have all necessary scripts (also located in this repository) in the directory you are reducing the data in: 
 
 - 01_script_otf_to_class.py
 

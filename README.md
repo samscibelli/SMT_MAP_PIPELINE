@@ -274,6 +274,8 @@ To inspect this map you can do the following in CLASS/GREG:
 
 >> LAS > hard  class_fqm_hu_atc_007.eps   ! save image
 
+![CO Map!](class_fqm_hu_atc_007.jpeg "CO Map of B68")
+
 FINALLY, to save as a .fits file, 
    
 >> LAS > fits class_fqm_hu_atc_007.fits from class_fqm_hu_atc_007.lmv

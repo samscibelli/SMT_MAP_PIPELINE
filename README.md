@@ -265,9 +265,13 @@ The script will creat the follwing map file that can be read by class,
 To inspect this map you can do the following in CLASS/GREG: 
 
 >> LAS > let name class_fqm_hu_atc_007
+
 >> LAS > let type lmv
+
 >> LAS > go view    ! interactive map
+
 >> LAS > go bit     ! channel maps
+
 >> LAS > hard  class_fqm_hu_atc_007.eps   ! save image
 
 FINALLY, to save as a .fits file, 

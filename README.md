@@ -261,7 +261,7 @@ The script will ask you:
    
 	   class_fqm_hu_atc_007
    
-The script will creat the follwing map file that can be read by class, 
+The script will create the follwing map file that can be read by class, 
 - class_fqm_hu_atc_007.lmv
 
 To inspect this map you can do the following in CLASS/GREG: 

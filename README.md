@@ -216,7 +216,7 @@ Then, keep track of the amount of observation numbers for each map, as you will 
 
 To combine, run the 08_combine.class file in CLASS: 
 
-<< LAS > @08_combine.class
+>> LAS > @08_combine.class
 
 The script will ask you: 
 
@@ -228,19 +228,51 @@ The script will ask you:
 
 ## 9) Sum the Data
 
-Typically to save on data space, each position in the map can be ‘summed’ together. Unfortunately it is currently not available. This shouldn’t affect the resulting maps!
+Typically to save on data space, each position in the map can be ‘summed’ together. Unfortunately it is currently not available with the updated version of CLASS on the arizona computers. This shouldn’t affect the resulting maps!
  
 ## 10) Fit the Data and Make the Map! 
 
+Before you Run the fitting script, you need to change the script to include fitting parameters for the line of interest. Adjust this as needed. E.g., in the example script
+   
+          SET WIN 0 10 !the velocity range around the line of interest
+
+   and, 
+   
+	  lines 1 "0 1 0 4 0 1" /nocursor !estimate the peak (1K here), the vlsr (4 km/s here), and the width of the line (1 km/s here)
+
+   
 Run the 10_map_fitting.pro class file in CLASS: 
 
 >> LAS > @10_map_fitting.pro 
 
 The script will ask you: 
-What data file you want to fit 
-What the new names of the files should be 
 
+1) What data file you want to fit, e.g.,
+   
+           class_fqm_hu_atc_007.conv 
+   
+2) What you want the name of your output fitting file to be, e.g.,
+   
+	   class_fqm_hu_atc_007
 
+3) What you want the name of the mapping files to be (NEEDS TO BE SAME AS ABOVE), e.g.,
+   
+	   class_fqm_hu_atc_007
+   
+The script will creat the follwing map file that can be read by class, 
+- class_fqm_hu_atc_007.lmv
+
+To inspect this map you can do the following in CLASS/GREG: 
+
+>> LAS > let name class_fqm_hu_atc_007
+>> LAS > let type lmv
+>> LAS > go view    ! interactive map
+>> LAS > go bit     ! channel maps
+>> LAS > hard  class_fqm_hu_atc_007.eps   ! save image
+
+FINALLY, to save as a .fits file, 
+   
+>> LAS > fits class_fqm_hu_atc_007.fits from class_fqm_hu_atc_007.lmv
 
 
 

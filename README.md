@@ -18,7 +18,7 @@ This pipeline assumes you have all necessary scripts in your directory:
 
 - bigbeam.class
 
-You can follow along with example data starting at step 4) which are also in this repository. We have 12CO (hu, horizontal polarization in upper side band) and 13CO (hl, horizontal polarization in lower side band) data of the B68 dark cloud. The files are: 
+You can follow along with example data, which are also in this repository, starting at step 4). We have 12CO ('hu', horizontal polarization in upper side band) and 13CO ('hl', horizontal polarization in lower side band) data of the B68 dark cloud. When you unzip 'class.sdd_FILES.zip' you should find the following files: 
 
 - class.sdd_fqm-hu.atc_007
 - class.sdd_fqm-hl.atc_007
@@ -53,7 +53,7 @@ The script will ask you the following,
 2) Data file the mapping data comes from
 3) Beginning scan number
 4) End scan number
-5) The backend name
+5) The backend name (e.g., in the example we use 'fqm' for the 250kHz backend)
 6) Telescope sideband (upper or lower)
 
 The script will then produce the CLASS map files that start with ‘class.sdd’ in the name for both vertical and horizontal polarizations. 

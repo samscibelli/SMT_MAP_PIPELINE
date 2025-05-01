@@ -18,7 +18,7 @@ This pipeline assumes you have all necessary scripts in your directory:
 
 - bigbeam.class
 
-You can follow along with example data starting at step 4) and located in the example/ folder in this repository. We have 12CO and 13CO data of the B68 dark cloud. The files are: 
+You can follow along with example data starting at step 4) and located in the example/ folder in this repository. We have 12CO (hu, horizontal polarization in upper side band) and 13CO (hl, horizontal polarization in lower side band) data of the B68 dark cloud. The files are: 
 
 - class.sdd_fqm-hu.atc_007
 - class.sdd_fqm-hl.atc_007
